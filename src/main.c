@@ -3,6 +3,9 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
+#define readtime 2
+#define palavras_path "./src/palavras.txt"
 
 void limpar_buffer(){
     while(getchar() != '\n');
@@ -15,6 +18,7 @@ void limpar_tela(){
         system("clear");
     #endif
 }
+
 void imprimir_boneco(int estagio){
     if(estagio < 0 || estagio > 6){
         printf("estagio do boneco invalido");
@@ -50,7 +54,7 @@ void imprimir_boneco(int estagio){
             printf("|                 |\n");
             printf("|               ('-')\n");
             printf("|                 |\n");
-            printf("|\n");
+            printf("|                 |\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
@@ -63,7 +67,7 @@ void imprimir_boneco(int estagio){
             printf("|                 |\n");
             printf("|               ('-')\n");
             printf("|                /|\n");
-            printf("|\n");
+            printf("|                 |\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
@@ -75,7 +79,7 @@ void imprimir_boneco(int estagio){
             printf("|                 |\n");
             printf("|               ('-')\n");
             printf("|                /|\\\n");
-            printf("|\n");
+            printf("|                 |\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
@@ -112,8 +116,16 @@ void imprimir_boneco(int estagio){
 }
 
 void imprimir_menu(){
+    printf("JOGO DA FORCA\n");
+    imprimir_boneco(6);
     printf("\n1) JOGAR\n2) SAIR\n");
     return;
+}
+
+void to_upper_string(char* str){
+    for(int i = 0; str[i]!='\0'; i++){
+        str[i] = toupper(str[i]);
+    }
 }
 
 typedef struct{
@@ -131,19 +143,22 @@ int quantidadePalavras(FILE* arquivo){
     return qtd;
 }
 MatrizPalavras* carregar_palavras(){
-    FILE* arquivo_palavras = fopen("./palavras.txt","a+");
+    FILE* arquivo_palavras = fopen(palavras_path,"a+");
     rewind(arquivo_palavras);
     MatrizPalavras* matriz = (MatrizPalavras*) malloc(sizeof(MatrizPalavras));
+    int qtdPalavras = quantidadePalavras(arquivo_palavras);
     matriz->qtdPalavras = 0;
-    matriz->palavras = (char**) malloc(quantidadePalavras(arquivo_palavras)*sizeof(char*));
+    matriz->palavras = (char**) malloc(qtdPalavras*sizeof(char*));
     rewind(arquivo_palavras);
-    int i = 0;
     char buffer[50];
 
-    while ( fgets(buffer,sizeof(buffer),arquivo_palavras) != NULL){
-        matriz->palavras[i] = (char*) malloc(sizeof(buffer));
+    for( int i = 0; i < qtdPalavras ; i++){
+        fgets(buffer,sizeof(buffer),arquivo_palavras);
+        if (buffer[strlen(buffer)-1] == '\n'){
+            buffer[strlen(buffer) -1] = '\0';
+        }
+        matriz->palavras[i] = (char*) malloc(sizeof(buffer));  
         strcpy(matriz->palavras[i],buffer);
-        i++;
         matriz->qtdPalavras++;
     };
     fclose(arquivo_palavras);
@@ -158,32 +173,47 @@ int main(){
         return 0;
     }
     srand(time(NULL));
-    printf("JOGO DA FORCA\n");
-    imprimir_boneco(6);
     imprimir_menu();
     char opcao = '0';
     while(true){   
         printf("\nESCOLHA UMA OPCAO: ");     
-        scanf(" %c", &opcao);
+        opcao = getchar();
         limpar_buffer();
         switch (opcao){
-            case '1': {
+            case '1': { //inicia loop do jogo
                 limpar_tela();
                 char *palavra_escolhida = matriz->palavras[rand()%matriz->qtdPalavras];
+                to_upper_string(palavra_escolhida);
                 int tamanho_palavra = strlen(palavra_escolhida);
-                printf("palavra escolhida foi: %s\n",palavra_escolhida);
                 char palavra_advinhada[tamanho_palavra];
-                for(int i = 0; i<tamanho_palavra;i++){
-                    palavra_advinhada[i] = '_';
-                }
                 int erros = 0;
                 int letras_acertadas = 0;
                 char letras_tentadas[26];
                 int ultimo_indice_tentadas = 0;
-                limpar_tela();
-                while(true){
+                char error_message[100] = {0};
+                for(int i = 0; i<tamanho_palavra;i++){
+                    if(palavra_escolhida[i] == ' '){
+                        palavra_advinhada[i] = ' ';
+                        letras_acertadas++; //os espaços ja vêm como acertadas
+                    }else{
+                        palavra_advinhada[i] = '_';
+                        
+                    }
+                }
+                
+                while(true){ //loop principal
                     limpar_tela();
                     imprimir_boneco(erros);
+                    
+                    if(erros == 6){
+                        printf("\nVOCE PERDEU :( ");
+                        printf("\nA PALAVRA ERA: %s",palavra_escolhida);
+                        break;
+                    }
+                    if (letras_acertadas == tamanho_palavra){
+                        printf("\nPARABENS! :D\nVOCE ACERTOU A PALAVRA -> %s",palavra_escolhida);
+                        break;
+                    }
                     printf("\nPALAVRA: ");
                     for(int i = 0; i<tamanho_palavra;i++){
                         printf("%c",palavra_advinhada[i]);
@@ -194,10 +224,61 @@ int main(){
                         printf(" %c ,",letras_tentadas[i]);
                     }
                     printf("]");
+                    printf("%s",error_message);
+                    strcpy(error_message,"");
                     printf("\n\nESCOLHA UMA LETRA: ");
-                    char letra_escolhida = getchar();
+                    char letra_escolhida = toupper(getchar());
                     limpar_buffer();
-                    //verificação de letra escolhida
+                    if (!isalpha(letra_escolhida)) { //verifica se é uma letra válida
+                        strcpy(error_message,"\nLETRA INVÁLIDA, DIGITE APENAS LETRAS DO ALFABETO\n");
+                        printf("%c",7);
+                        continue;
+                    }
+                    bool ja_tentou = false;
+                    for(int i = 0; i < ultimo_indice_tentadas; i++){
+                        if (letra_escolhida == letras_tentadas[i]){
+                            ja_tentou = true;
+                            break;
+                        }
+                    }
+                    if(ja_tentou){
+                        strcpy(error_message,"\nVOCE JA TENTOU ESSA LETRA\n");
+                        printf("%c",7);
+                        continue;
+                    }
+                    letras_tentadas[ultimo_indice_tentadas] = letra_escolhida;
+                    ultimo_indice_tentadas+=1;
+                    bool acertou = false;
+                    for (int i = 0; i < tamanho_palavra ; i++){
+                        if (palavra_escolhida[i] == letra_escolhida){
+                            palavra_advinhada[i] = letra_escolhida;
+                            letras_acertadas+=1;
+                            acertou = true;
+                        }
+                    }
+                    if (!acertou){
+                        erros+=1;
+                    }
+                    
+                }
+                
+                printf("\nVOLTAR AO MENU : 1\nSAIR : 2\n");
+                while(true){
+                    printf("DIGITE UMA OPCAO: ");
+                    opcao = getchar();
+                    limpar_buffer();
+                    if(opcao == '1'){
+                        limpar_tela();
+                        imprimir_menu();
+                        break;
+                    }else if(opcao == '2'){
+                        limpar_tela();
+                        printf("\nOBRIGADO POR JOGAR :)\n");
+                        exit(0);
+                    }else{
+                        printf("\nOPCAO INVALIDA\n");
+                    }
+
                 }
                 break;
             }

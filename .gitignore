@@ -1,2 +1,5 @@
 #Pasta do executavel do jogo
-bin/
+/bin/
+
+#Debug
+/logs/
