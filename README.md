@@ -1,11 +1,11 @@
-JOGO DA FORCA implementado em C
+# JOGO DA FORCA implementado em C
 
 - para rodar o jogo:
     - execute 'run.sh' caso esteja no linux
 
     - execute 'run.bat' caso esteja no Windows
 
-    # AVISO:
+    - AVISO:
     - esses arquivos apenas executam a compilação e rodam o binário automaticamente, para facilitar a vida do usuário,
     porém caso o usuário não tenha o GCC configurado no path nas variáveis de ambiente do sistema, causará erro de compilação.
     - Quaisquer erros de compilação ficam salvos no arquivo da pasta logs/
