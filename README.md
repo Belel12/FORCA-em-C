@@ -1,9 +1,9 @@
 # JOGO DA FORCA implementado em C
 
-- para rodar o jogo:
+- para rodar o jogo, na pasta raíz do projeto:
     - execute 'run.sh' caso esteja no linux
-
     - execute 'run.bat' caso esteja no Windows
+    - caso o terminal 'pisque' (comum de ocorrer no windows) ao executar com duplo clique, execute o arquivo via terminal
 
     - AVISO:
     - esses arquivos apenas executam a compilação e rodam o binário automaticamente, para facilitar a vida do usuário,
@@ -11,16 +11,11 @@
     - Quaisquer erros de compilação ficam salvos no arquivo da pasta logs/
 
 - para configurar as palavras:
-    - o programa seleciona uma das palavras dentro do arquivo 'palavras.txt' de forma randômica para iniciar o jogo,
-    caso o arquivo esteja vazio, uma mensagem de aviso irá aparecer e o jogo não irá continuar
-    - o que separa cada palavra é a quebra de linha, ou seja, caso coloque por exemplo:
-        - "UVA VERDE"
-        - "BANANA"
-    - "UVA VERDE" será considerada uma palavra só
-    - o programa lê palavras de até 50 caracteres, até o momento caso seja colocado uma palavra maior que 50 caracteres,
-        poderá ocorrer comportamento inesperado como palavras cortadas
-    - palavras com acento provavelmente irão dar problema visto que as bibliotecas padrão da linguagem C não têm suporte
-        nativo à caracteres unicode, talvez eu crie uma função para tirar acentos, mas novamente, as palavras que serão
-        usadas no jogo serão sem acento de qualquer forma
-        
--João Gabriel F. S. Prado
+    - o programa seleciona randomicamente uma linha do arquivo de palavras para ler, automaticamente já calculando quantas
+        linhas tem no arquivo, então ele armazena a palavra e a dica que a segue, delimitada por ';'
+    - O tamanho reservado para palavras é de 50 caracteres e para as dicas são 100 caracteres, caso for adicionar novas
+        linhas ou modificar as existentes, tenha em mente que caso o tamanho não seja respeitado pode ocorrer da palavra
+        vir cortada
+    - O sistema tem suporte para palavras com espaços. ex.: "UVA VERDE" 
+    - Voce pode desabilitar as dicas no menu, as dicas aparecem faltando somente 1 erro para perder, visto que elas ajudam bastante   
+- João Gabriel F. S. Prado

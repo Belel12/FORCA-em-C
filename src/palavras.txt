@@ -1,101 +1,101 @@
-abacate
-abelha
-abismo
-abrigo
-absoluto
-acaso
-acucar
-adubo
-afeto
-agente
-agora
-aguia
-ajuda
-alface
-alguma
-algum
-alimento
-altura
-amargo
-amigo
-amor
-amplo
-ancora
-anel
-animal
-anjo
-antigo
-areia
-aroma
-arroz
-arte
-asa
-astro
-atleta
-ativo
-autor
-ave
-aviao
-azul
-bala
-banco
-barco
-barra
-base
-bateria
-bebida
-beleza
-bicho
-bloco
-bola
-bolo
-bolsa
-branco
-brasa
-bravo
-brilho
-brisa
-cabo
-cafe
-caja
-calma
-cama
-campo
-canal
-canto
-capaz
-capim
-carro
-carta
-casa
-caso
-cedo
-cena
-certo
-chave
-chefe
-chuva
-cidade
-claro
-cobra
-coisa
-comum
-conto
-copo
-cor
-corda
-corpo
-corte
-costa
-cravo
-crer
-crise
-cruz
-dado
-danca
-dente
-dono
-doce
-dom
-drama
-duelo
+abacate;fruta verde com caroço grande
+abelha;inseto que produz mel
+abismo;queda muito profunda
+abrigo;lugar que protege da chuva ou perigo
+absoluto;total ou completo
+acaso;algo que acontece por sorte ou coincidência
+acucar;ingrediente doce usado em comidas
+adubo;material usado para nutrir plantas
+afeto;sentimento de carinho
+agente;pessoa que realiza uma ação
+agora;momento presente
+aguia;ave de rapina com visão muito boa
+ajuda;ato de auxiliar alguém
+alface;verdura comum em saladas
+alguma;quantidade indefinida feminina
+algum;quantidade indefinida masculina
+alimento;algo usado para se alimentar
+altura;medida de quão alto algo é
+amargo;sabor oposto ao doce
+amigo;pessoa de confiança
+amor;sentimento forte de carinho
+amplo;grande ou espaçoso
+ancora;objeto que prende o barco no fundo do mar
+anel;joia usada no dedo
+animal;ser vivo que não é planta
+anjo;ser espiritual com asas
+antigo;algo muito velho
+areia;grãos finos encontrados na praia
+aroma;cheiro agradável
+arroz;grão muito consumido nas refeições
+arte;forma de expressão criativa
+asa;parte do corpo usada para voar
+astro;corpo celeste como estrela ou planeta
+atleta;pessoa que pratica esportes
+ativo;que está em ação
+autor;pessoa que escreve uma obra
+ave;animal com penas e asas
+aviao;veículo que voa transportando pessoas
+azul;cor do céu em dia claro
+bala;doce pequeno ou munição
+banco;lugar para guardar dinheiro
+barco;meio de transporte na água
+barra;peça longa e rígida
+base;fundamento ou parte inferior
+bateria;conjunto que fornece energia elétrica
+bebida;líquido para beber
+beleza;qualidade de algo bonito
+bicho;animal de forma geral
+bloco;peça sólida ou conjunto agrupado
+bola;objeto redondo usado em jogos
+bolo;doce assado de massa
+bolsa;objeto usado para carregar coisas
+branco;cor clara como a neve
+brasa;carvão quente em fogo
+bravo;zangado ou corajoso
+brilho;luz refletida
+brisa;vento leve
+cabo;extremidade ou fio condutor
+cafe;bebida feita do grão torrado
+caja;fruta amarela tropical
+calma;estado de tranquilidade
+cama;móvel usado para dormir
+campo;área aberta de terra
+canal;caminho para passagem de água ou sinal
+canto;parte ou esquina de um lugar
+capaz;que tem habilidade para algo
+capim;grama usada por animais para comer
+carro;veículo terrestre com motor
+carta;mensagem escrita enviada a alguém
+casa;lugar onde se mora
+caso;situação ou acontecimento
+cedo;antes do horário comum
+cena;parte de uma história ou filme
+certo;correto ou verdadeiro
+chave;objeto que abre fechaduras
+chefe;pessoa que lidera um grupo
+chuva;água que cai das nuvens
+cidade;local urbano com muitas pessoas
+claro;com muita luz ou fácil de entender
+cobra;réptil alongado sem pernas
+coisa;objeto ou assunto indefinido
+comum;algo frequente ou normal
+conto;história curta
+copo;recipiente para beber
+cor;característica visual como vermelho ou azul
+corda;fio grosso usado para amarrar
+corpo;parte física de um ser vivo
+corte;ato de dividir com algo afiado
+costa;parte de trás do corpo ou litoral
+cravo;flor ou tempero aromático
+crer;acreditar em algo
+crise;momento de dificuldade
+cruz;símbolo formado por duas linhas
+dado;cubo usado em jogos
+danca;movimento rítmico do corpo
+dente;parte dura usada para mastigar
+dono;pessoa que possui algo
+doce;alimento com sabor açucarado
+dom;talento natural
+drama;história com forte emoção
+duelo;combate entre duas pessoas

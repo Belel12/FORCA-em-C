@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-#define readtime 2
 #define palavras_path "./src/palavras.txt"
 
 void limpar_buffer(){
@@ -126,10 +125,16 @@ void imprimir_boneco(int estagio){
     }
 }
 
-void imprimir_menu(){
+void imprimir_menu(bool dica_habilitada){
     printf("JOGO DA FORCA\n");
     imprimir_boneco(7);
     printf("\n1) JOGAR\n2) SAIR\n");
+    if(dica_habilitada){
+        printf("3) DESABILITAR DICAS");
+    }
+    else{
+        printf("3) HABILITAR DICAS");
+    };
     return;
 }
 
@@ -139,7 +144,7 @@ void to_upper_string(char* str){
     }
 }
 
-int quantidadePalavras(FILE* arquivo){
+int quantidadeLinhas(FILE* arquivo){
     if(arquivo == NULL)
         return 0;
     int qtd = 0;
@@ -149,50 +154,59 @@ int quantidadePalavras(FILE* arquivo){
     return qtd;
 }
 
+int carregar_palavraEdica(int linha, char* palavra, char* dica){ //carrega a palavra e a dica nos ponteiros passados como parâmetro dada a linha da palavra;linha
+        char buffer[200];
+        FILE* arquivo = fopen(palavras_path,"r");
+        if(arquivo == NULL){
+                printf("\nERRO AO ABRIR O ARQUIVO PARA LEITURA");
+                return 0;
+        }
+        for(int i = 0; i < linha; i++){
+                if(fgets(buffer,sizeof(buffer),arquivo) == NULL){
+                        printf("\nERRO AO LER A PALAVRA NA LINHA ESPECIFICADA");
+                        return 0;
+                }
+        }
+        fclose(arquivo);
+        strcpy(palavra,strtok(buffer,";\n"));
+        strcpy(dica,strtok(NULL,";\n"));
+        return 1;
+}
+
 int main(){
     limpar_tela();
-    FILE* arquivo = fopen(palavras_path,"a+");
-    int qtdPalavras = quantidadePalavras(arquivo);
-    fclose(arquivo);
+    FILE* arquivo_palavras = fopen(palavras_path,"a+");
+    if(arquivo_palavras == NULL){
+        printf("\nERRO: ARQUIVO DE PALAVRAS NAO ENCONTRADO");
+        return 1;
+    };
+    int qtdPalavras = quantidadeLinhas(arquivo_palavras);
+    fclose(arquivo_palavras);
     if(qtdPalavras == 0){
         printf("Nao ha palavras no arquivo de palavras\ncoloque as palavras a serem usadas no jogo la,\numa por linha.\n");
         return 0;
     }
     srand(time(NULL));
-    imprimir_menu();
+    bool habilitar_dicas = true;
+    imprimir_menu(habilitar_dicas);
     char opcao = '0';
     while(true){   
-        printf("\nESCOLHA UMA OPCAO: ");     
+        printf("\nESCOLHA UMA OPCAO: ");
         opcao = getchar();
         limpar_buffer();
         switch (opcao){
             case '1': { //inicia loop do jogo
                 limpar_tela();
-                FILE* arquivo = fopen(palavras_path,"r");
-                if (arquivo == NULL){
-                    printf("\nERRO AO ABRIR O ARQUIVO DE PALAVRAS\n");
-                    return 0;
-                }
                 int numero_palavra_escolhida = rand()%qtdPalavras;
                 if (numero_palavra_escolhida == 0) //para evitar de não ter nenhuma palavra
                         numero_palavra_escolhida = 1;
-                char palavra_escolhida[50] = {0};
-                for(int i = 0 ; i < numero_palavra_escolhida; i++){ //lê até chegar no na palavra de número definido
-                        if (fgets(palavra_escolhida,sizeof(palavra_escolhida),arquivo) == NULL){
-                                printf("\nERRO: NUMERO DA PALAVRA INALCANÇÁVEL");
-                                return 0;
-                        }
-                }
-                fclose(arquivo);
-                if(palavra_escolhida[0] == '\0'){
-                        printf("\nERRO AO LER PALAVRA SELECIONADA ");
-                        return 0;
-                }
+                char palavra_escolhida[50];
+                char dica[100];
+                if(!carregar_palavraEdica(numero_palavra_escolhida,palavra_escolhida,dica)){
+                        printf("\nERRO AO CARREGAR PALAVRA E DICA");
+                        exit(1);
+                };
                 int tamanho_palavra = strlen(palavra_escolhida);
-                if(palavra_escolhida[tamanho_palavra-1] == '\n'){ //tira o \n que fica no final
-                        palavra_escolhida[tamanho_palavra-1] = '\0';
-                        tamanho_palavra--;
-                }
                 to_upper_string(palavra_escolhida);               
                 char palavra_advinhada[tamanho_palavra];
                 int erros = 0;
@@ -235,12 +249,15 @@ int main(){
                     printf("]");
                     printf("%s",error_message);
                     strcpy(error_message,"");
+                    if(erros >= 6 && habilitar_dicas){
+                        printf("\nDICA: %s\n",dica);
+                    };
                     printf("\n\nESCOLHA UMA LETRA: ");
                     char letra_escolhida = toupper(getchar());
                     limpar_buffer();
                     if (!isalpha(letra_escolhida)) { //verifica se é uma letra válida
                         strcpy(error_message,"\nLETRA INVÁLIDA, DIGITE APENAS LETRAS DO ALFABETO\n");
-                        printf("%c",7);
+                        printf("\a");
                         continue;
                     }
                     bool ja_tentou = false;
@@ -252,7 +269,7 @@ int main(){
                     }
                     if(ja_tentou){
                         strcpy(error_message,"\nVOCE JA TENTOU ESSA LETRA\n");
-                        printf("%c",7);
+                        printf("\a");
                         continue;
                     }
                     letras_tentadas[ultimo_indice_tentadas] = letra_escolhida;
@@ -278,7 +295,7 @@ int main(){
                     limpar_buffer();
                     if(opcao == '1'){
                         limpar_tela();
-                        imprimir_menu();
+                        imprimir_menu(habilitar_dicas);
                         break;
                     }else if(opcao == '2'){
                         limpar_tela();
@@ -294,6 +311,12 @@ int main(){
             case '2':
                 limpar_tela();
                 exit(0);
+            case '3':{
+                habilitar_dicas = !habilitar_dicas;
+                limpar_tela();
+                imprimir_menu(habilitar_dicas);
+                break;
+            }
             default:
                 printf("\nOPCAO INVALIDA\n");
                 break;
