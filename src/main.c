@@ -20,7 +20,7 @@ void limpar_tela(){
 }
 
 void imprimir_boneco(int estagio){
-    if(estagio < 0 || estagio > 6){
+    if(estagio < 0 || estagio > 7){
         printf("estagio do boneco invalido");
         return;
     }
@@ -54,31 +54,30 @@ void imprimir_boneco(int estagio){
             printf("|                 |\n");
             printf("|               ('-')\n");
             printf("|                 |\n");
-            printf("|                 |\n");
+            printf("|\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
             break;
-        
         case 3:
-            printf("|-----------------|\n");
-            printf("|                 |\n");
-            printf("|               ('-')\n");
-            printf("|                /|\n");
-            printf("|                 |\n");
-            printf("|\n");
-            printf("|\n");
-            printf("|\n");
-            printf("|\n");
-            printf("|\n");
+                printf("|-----------------|\n");
+                printf("|                 |\n");
+                printf("|               ('-')\n");
+                printf("|                 |\n");
+                printf("|                 |\n");
+                printf("|\n");
+                printf("|\n");
+                printf("|\n");
+                printf("|\n");
+                printf("|\n");
             break;
         case 4:
             printf("|-----------------|\n");
             printf("|                 |\n");
             printf("|               ('-')\n");
-            printf("|                /|\\\n");
+            printf("|                /|\n");
             printf("|                 |\n");
             printf("|\n");
             printf("|\n");
@@ -92,13 +91,25 @@ void imprimir_boneco(int estagio){
             printf("|               ('-')\n");
             printf("|                /|\\\n");
             printf("|                 |\n");
-            printf("|                /\n");
+            printf("|\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
             printf("|\n");
             break;
         case 6:
+            printf("|-----------------|\n");
+            printf("|                 |\n");
+            printf("|               ('-')\n");
+            printf("|                /|\\\n");
+            printf("|                 |\n");
+            printf("|                /\n");
+            printf("|\n");
+            printf("|\n");
+            printf("|\n");
+            printf("|\n");
+            break;
+        case 7:
             printf("|-----------------|\n");
             printf("|                 |\n");
             printf("|               (x-x)\n");
@@ -117,7 +128,7 @@ void imprimir_boneco(int estagio){
 
 void imprimir_menu(){
     printf("JOGO DA FORCA\n");
-    imprimir_boneco(6);
+    imprimir_boneco(7);
     printf("\n1) JOGAR\n2) SAIR\n");
     return;
 }
@@ -166,17 +177,23 @@ int main(){
                 if (numero_palavra_escolhida == 0) //para evitar de não ter nenhuma palavra
                         numero_palavra_escolhida = 1;
                 char palavra_escolhida[50] = {0};
-                char buffer[50] = {0};
-                for(int i = 0 ; i < numero_palavra_escolhida || fgets(buffer,sizeof(buffer),arquivo) != NULL; i++){
+                for(int i = 0 ; i < numero_palavra_escolhida; i++){ //lê até chegar no na palavra de número definido
+                        if (fgets(palavra_escolhida,sizeof(palavra_escolhida),arquivo) == NULL){
+                                printf("\nERRO: NUMERO DA PALAVRA INALCANÇÁVEL");
+                                return 0;
+                        }
                 }
                 fclose(arquivo);
-                if(buffer[0] == '\0'){
+                if(palavra_escolhida[0] == '\0'){
                         printf("\nERRO AO LER PALAVRA SELECIONADA ");
                         return 0;
                 }
-                strcpy(palavra_escolhida,buffer);
-                to_upper_string(palavra_escolhida);
                 int tamanho_palavra = strlen(palavra_escolhida);
+                if(palavra_escolhida[tamanho_palavra-1] == '\n'){ //tira o \n que fica no final
+                        palavra_escolhida[tamanho_palavra-1] = '\0';
+                        tamanho_palavra--;
+                }
+                to_upper_string(palavra_escolhida);               
                 char palavra_advinhada[tamanho_palavra];
                 int erros = 0;
                 int letras_acertadas = 0;
@@ -197,7 +214,7 @@ int main(){
                     limpar_tela();
                     imprimir_boneco(erros);
                     
-                    if(erros == 6){
+                    if(erros == 7){
                         printf("\nVOCE PERDEU :( ");
                         printf("\nA PALAVRA ERA: %s",palavra_escolhida);
                         break;
