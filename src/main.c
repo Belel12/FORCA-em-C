@@ -128,11 +128,6 @@ void to_upper_string(char* str){
     }
 }
 
-typedef struct{
-    char** palavras;
-    int qtdPalavras;
-} MatrizPalavras;
-
 int quantidadePalavras(FILE* arquivo){
     if(arquivo == NULL)
         return 0;
@@ -142,33 +137,13 @@ int quantidadePalavras(FILE* arquivo){
         qtd++;
     return qtd;
 }
-MatrizPalavras* carregar_palavras(){
-    FILE* arquivo_palavras = fopen(palavras_path,"a+");
-    rewind(arquivo_palavras);
-    MatrizPalavras* matriz = (MatrizPalavras*) malloc(sizeof(MatrizPalavras));
-    int qtdPalavras = quantidadePalavras(arquivo_palavras);
-    matriz->qtdPalavras = 0;
-    matriz->palavras = (char**) malloc(qtdPalavras*sizeof(char*));
-    rewind(arquivo_palavras);
-    char buffer[50];
-
-    for( int i = 0; i < qtdPalavras ; i++){
-        fgets(buffer,sizeof(buffer),arquivo_palavras);
-        if (buffer[strlen(buffer)-1] == '\n'){
-            buffer[strlen(buffer) -1] = '\0';
-        }
-        matriz->palavras[i] = (char*) malloc(sizeof(buffer));  
-        strcpy(matriz->palavras[i],buffer);
-        matriz->qtdPalavras++;
-    };
-    fclose(arquivo_palavras);
-    return matriz;
-}
 
 int main(){
     limpar_tela();
-    MatrizPalavras* matriz = carregar_palavras();
-    if(matriz->qtdPalavras == 0){
+    FILE* arquivo = fopen(palavras_path,"a+");
+    int qtdPalavras = quantidadePalavras(arquivo);
+    fclose(arquivo);
+    if(qtdPalavras == 0){
         printf("Nao ha palavras no arquivo de palavras\ncoloque as palavras a serem usadas no jogo la,\numa por linha.\n");
         return 0;
     }
@@ -182,7 +157,24 @@ int main(){
         switch (opcao){
             case '1': { //inicia loop do jogo
                 limpar_tela();
-                char *palavra_escolhida = matriz->palavras[rand()%matriz->qtdPalavras];
+                FILE* arquivo = fopen(palavras_path,"r");
+                if (arquivo == NULL){
+                    printf("\nERRO AO ABRIR O ARQUIVO DE PALAVRAS\n");
+                    return 0;
+                }
+                int numero_palavra_escolhida = rand()%qtdPalavras;
+                if (numero_palavra_escolhida == 0) //para evitar de não ter nenhuma palavra
+                        numero_palavra_escolhida = 1;
+                char palavra_escolhida[50] = {0};
+                char buffer[50] = {0};
+                for(int i = 0 ; i < numero_palavra_escolhida || fgets(buffer,sizeof(buffer),arquivo) != NULL; i++){
+                }
+                fclose(arquivo);
+                if(buffer[0] == '\0'){
+                        printf("\nERRO AO LER PALAVRA SELECIONADA ");
+                        return 0;
+                }
+                strcpy(palavra_escolhida,buffer);
                 to_upper_string(palavra_escolhida);
                 int tamanho_palavra = strlen(palavra_escolhida);
                 char palavra_advinhada[tamanho_palavra];
